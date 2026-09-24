@@ -1,0 +1,46 @@
+# datvps - front proxy dùng chung: nginx-proxy + acme-companion (Let's Encrypt).
+# Biến PROXY_DIR / PROXY_NETWORK / ACME_EMAIL lấy từ $PROXY_DIR/.env
+x-base: &base
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  nginx-proxy:
+    <<: *base
+    image: ${PROXY_IMAGE:-nginxproxy/nginx-proxy:1.6}
+    container_name: datvps-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${PROXY_DIR}/certs:/etc/nginx/certs:ro
+      - ${PROXY_DIR}/vhost.d:/etc/nginx/vhost.d
+      - ${PROXY_DIR}/html:/usr/share/nginx/html
+      - ${PROXY_DIR}/conf.d/datvps.conf:/etc/nginx/conf.d/datvps.conf:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks: [proxy]
+
+  acme-companion:
+    <<: *base
+    image: ${ACME_IMAGE:-nginxproxy/acme-companion:2.4}
+    container_name: datvps-acme
+    depends_on: [nginx-proxy]
+    environment:
+      NGINX_PROXY_CONTAINER: datvps-proxy
+      DEFAULT_EMAIL: ${ACME_EMAIL:-}
+    volumes:
+      - ${PROXY_DIR}/certs:/etc/nginx/certs
+      - ${PROXY_DIR}/vhost.d:/etc/nginx/vhost.d
+      - ${PROXY_DIR}/html:/usr/share/nginx/html
+      - ${PROXY_DIR}/acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks: [proxy]
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-datvps_proxy}
