@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+# datvps - quản lý nhiều site WordPress cô lập trên 1 VPS bằng Docker.
+# Copyright (c) 2026 datvps. MIT License.
+set -Eeuo pipefail
+
+DATVPS_HOME="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+export DATVPS_HOME
+
+# shellcheck source=../lib/common.sh
+. "$DATVPS_HOME/lib/common.sh"
+# shellcheck source=../lib/setup.sh
+. "$DATVPS_HOME/lib/setup.sh"
+# shellcheck source=../lib/site.sh
+. "$DATVPS_HOME/lib/site.sh"
+# shellcheck source=../lib/backup.sh
+. "$DATVPS_HOME/lib/backup.sh"
+# shellcheck source=../lib/system.sh
+. "$DATVPS_HOME/lib/system.sh"
+# shellcheck source=../lib/menu.sh
+. "$DATVPS_HOME/lib/menu.sh"
+
+ADD_IN_PROGRESS=0
+
+on_exit() {
+  local rc=$?
+  trap - EXIT
+  if [[ "$ADD_IN_PROGRESS" == 1 ]]; then add_rollback; (( rc )) || rc=1; fi
+  cleanup_tmp || true
+  exit "$rc"
+}
+trap on_exit EXIT
+trap 'warn "Lỗi: \"$BASH_COMMAND\" (mã $?) tại ${BASH_SOURCE[0]##*/}:$LINENO"' ERR
+trap 'echo; exit 130' INT
+
+usage() {
+  cat <<EOF
+${C_BOLD}datvps $DATVPS_VERSION${C_RESET} - quản lý nhiều site WordPress cô lập trên 1 VPS
+
+${C_BOLD}Cách dùng:${C_RESET} dat [lệnh] [tham số]      (không có lệnh = mở menu)
+
+${C_BOLD}Cài đặt${C_RESET}
+  setup [--email E] [--no-ufw] [--no-swap] [--no-cron]
+                              Cài Docker, UFW, swap, proxy, cron backup
+  update                      Cập nhật lệnh dat (git pull)
+  upgrade [--no-os]           Cập nhật OS + image Docker của proxy và các site
+  status                      Tình trạng hệ thống, proxy, site
+
+${C_BOLD}Site${C_RESET}
+  add <domain> [tuỳ chọn]     Tạo site WordPress mới (dat add --help)
+  ls                          Danh sách site
+  info <site>                 Thông tin chi tiết site
+  domain <site> <domain-mới>  Đổi domain, giữ nguyên dữ liệu
+  start|stop|restart <site|all>
+  logs <site> [web|php|db|redis]
+  wp <site> <lệnh...>         Chạy wp-cli (vd: dat wp blog.com plugin list)
+  fix-perms <site>            Chuẩn hoá quyền file wp-content
+  rm <site> [--no-backup] [--yes]
+
+${C_BOLD}Backup${C_RESET}
+  backup <site|all>           Backup DB + mã nguồn → $BACKUP_DIR/<id>/
+  backups [site]              Liệt kê backup
+  restore <file> [site]       Khôi phục (tự đổi domain nếu khác site gốc)
+  cron on|off|status          Backup tự động hằng ngày (giữ $KEEP_BACKUPS bản)
+
+  <site> = ID hoặc domain. Tuỳ chọn chung: -y/--yes (không hỏi xác nhận)
+EOF
+}
+
+usage_add() {
+  cat <<EOF
+Cách dùng: dat add <domain> [tuỳ chọn]
+
+  --ssl auto|origin|none   auto = Let's Encrypt (mặc định), origin = Cloudflare Origin Cert
+  --email EMAIL            Email Let's Encrypt (mặc định lấy từ $DATVPS_CONF)
+  --www                    Thêm cả www.<domain>
+  --cert FILE --key FILE   Origin cert + key (chế độ origin; bỏ trống để dán trực tiếp)
+  --title "Tên site"       Tiêu đề site
+  --admin-user USER        Tên đăng nhập admin (mặc định ngẫu nhiên)
+  --admin-email EMAIL      Email admin
+  --php 8.1|8.2|8.3|8.4    Phiên bản PHP (mặc định 8.3)
+
+Ví dụ:
+  dat add blog.com --ssl auto --email you@gmail.com --www
+  dat add shop.vn --ssl origin --cert shop.pem --key shop.key
+EOF
+}
+
+usage_setup() {
+  cat <<EOF
+Cách dùng: dat setup [--email EMAIL] [--no-ufw] [--no-swap] [--no-cron]
+Cài / cài lại (an toàn khi chạy nhiều lần) toàn bộ nền tảng datvps.
+EOF
+}
+
+main() {
+  # Tuỳ chọn chung ở bất kỳ vị trí nào
+  local args=() a
+  for a in "$@"; do
+    case $a in
+      -y|--yes) DATVPS_YES=1 ;;
+      *) args+=("$a") ;;
+    esac
+  done
+  set -- "${args[@]+"${args[@]}"}"
+
+  local cmd=${1:-}
+  (($#)) && shift
+  case $cmd in
+    "")
+      if [[ -t 0 && -t 1 ]]; then cmd_menu; else usage; fi ;;
+    setup)      cmd_setup "$@" ;;
+    add|new)    cmd_add "$@" ;;
+    ls|list)    cmd_ls ;;
+    info)       cmd_info "$@" ;;
+    domain)     cmd_domain "$@" ;;
+    start|stop|restart) cmd_lifecycle "$cmd" "$@" ;;
+    logs|log)   cmd_logs "$@" ;;
+    wp)         cmd_wp "$@" ;;
+    fix-perms)  cmd_fix_perms "$@" ;;
+    rm|remove|delete) cmd_rm "$@" ;;
+    backup)     cmd_backup "$@" ;;
+    backups)    cmd_backups "$@" ;;
+    restore)    cmd_restore "$@" ;;
+    cron)       cmd_cron "$@" ;;
+    update)     cmd_update ;;
+    upgrade)    cmd_upgrade "$@" ;;
+    status)     cmd_status ;;
+    menu)       cmd_menu ;;
+    version|-v|--version) echo "datvps $DATVPS_VERSION" ;;
+    help|-h|--help) usage ;;
+    *) usage >&2; die "Lệnh không tồn tại: $cmd" ;;
+  esac
+}
+
+main "$@"

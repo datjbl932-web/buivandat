@@ -1,0 +1,6 @@
+# datvps - bật Let's Encrypt tự động (acme-companion) cho site.
+services:
+  web:
+    environment:
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
