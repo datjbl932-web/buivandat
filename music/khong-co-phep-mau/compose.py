@@ -493,6 +493,10 @@ def main(outdir):
         vocal = hp(vocal, 110)
         vocal = vocal + bp(vocal, 2500, 5000) * 0.5      # rõ lời
         vocal = vocal - bp(vocal, 250, 450) * 0.3        # bớt ù
+        # nén nhẹ (3:1) cho giọng đều, "đứng" trong mix
+        env = np.sqrt(lp(vocal ** 2, 12, 1) + 1e-12)
+        thr = np.percentile(env[env > 1e-4], 60)
+        vocal = vocal * np.where(env > thr, (env / thr) ** (1 / 3 - 1), 1.0)
         lead = lead * 0.25                               # synth lùi xuống làm nền dẫn giai điệu
 
     # ---- trộn & hiệu ứng
@@ -514,12 +518,15 @@ def main(outdir):
         for k in range(1, 4):
             dly[c, off * k:] += src[: N - off * k] * (0.45 ** k)
 
-    G = {"drums": 0.55, "bass": 0.36, "pad": 1.35, "pluck": 1.0, "lead": 0.27, "fx": 0.6, "vocal": 2.5}
+    G = {"drums": 0.55, "bass": 0.36, "pad": 1.35, "pluck": 1.0, "lead": 0.27, "fx": 0.6, "vocal": 2.85}
     if os.environ.get("STEMS"):
         for name, st in [("drums", drums * G["drums"]), ("bass", bass_d * G["bass"]), ("pad", pad_d * G["pad"]), ("pluck", pluck_d * G["pluck"]), ("lead", lead * G["lead"]), ("vocal", vocal * G["vocal"])]:
             print(f"  {name:6} rms {20*np.log10(np.sqrt((st**2).mean())+1e-9):6.1f}  peak {np.abs(st).max():.2f}")
-    L = drums * G["drums"] + bass_d * G["bass"] + pad_d * G["pad"] * 0.95 + pluck_d * G["pluck"] * 1.15 + lead * G["lead"] + vocal * G["vocal"] + fx * G["fx"]
-    R = drums * G["drums"] + bass_d * G["bass"] + pad_d * G["pad"] * 1.05 + pluck_d * G["pluck"] * 0.85 + lead * G["lead"] + vocal * G["vocal"] + fx * G["fx"]
+    # nhân đôi giọng lệch nhẹ hai bên (dày và rộng hơn)
+    dbl_l = np.roll(vocal, int(0.013 * SR)) * 0.22
+    dbl_r = np.roll(vocal, int(0.021 * SR)) * 0.22
+    L = dbl_l * G["vocal"] + drums * G["drums"] + bass_d * G["bass"] + pad_d * G["pad"] * 0.95 + pluck_d * G["pluck"] * 1.15 + lead * G["lead"] + vocal * G["vocal"] + fx * G["fx"]
+    R = dbl_r * G["vocal"] + drums * G["drums"] + bass_d * G["bass"] + pad_d * G["pad"] * 1.05 + pluck_d * G["pluck"] * 0.85 + lead * G["lead"] + vocal * G["vocal"] + fx * G["fx"]
     mix = np.stack([L, R]) + rev + dly
     mix = hp(mix, 28)
     mix = mix + hp(mix, 2500) * 0.7   # kệ cao (high shelf) cho sáng

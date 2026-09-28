@@ -88,13 +88,15 @@ Trống, bass, pad, arpeggio và cây synth hát giai điệu đều được t�
 
 Giọng nam trong bài **không phải người thật hát**. Nó được làm theo hai bước:
 
-1. **Đọc:** một giọng đọc tiếng Việt tổng hợp ([Piper TTS](https://github.com/rhasspy/piper), giọng nam trong bộ dữ liệu VIVOS) đọc từng chữ của lời.
-2. **Hát:** bộ phân tích giọng [WORLD](https://github.com/mmorise/World) tách mỗi chữ thành cao độ, âm sắc và hơi. Sau đó chương trình dựng lại chữ đó thành nốt hát:
-   - kéo về đúng cao độ và độ dài của nốt nhạc;
-   - luyến sang nốt sau, rung (vibrato) ở nốt dài;
-   - phụ âm đầu được hát sớm hơn phách một chút, như ca sĩ thật.
+1. **Đọc:** một giọng đọc tiếng Việt tổng hợp ([Piper TTS](https://github.com/rhasspy/piper), giọng nam trong bộ dữ liệu VIVOS) đọc **liền cả câu**, chậm rãi, để giữ phần nối âm tự nhiên giữa các chữ. Ranh giới từng chữ được dò tự động bằng cách so khớp với bản đọc từng chữ riêng lẻ (thuật toán DTW).
+2. **Hát:** bộ phân tích giọng [WORLD](https://github.com/mmorise/World) tách câu thành cao độ, âm sắc và hơi, rồi dựng lại cả câu thành câu hát:
+   - chọn đoạn nguyên âm trong nhất của mỗi chữ để ngân dài, phụ âm đầu vào trước phách một chút như ca sĩ thật;
+   - lướt vào nốt đầu câu, luyến có đà (vượt nhẹ rồi về), rung không đều và chỉ ở nốt dài, buông giọng cuối câu;
+   - luyến láy nhẹ theo dấu: chữ dấu huyền, nặng hơi rơi ở cuối nốt, chữ dấu sắc, ngã hơi hất lên;
+   - nhấn nhá âm lượng theo câu, nốt cao và nốt dài to hơn, có tiếng lấy hơi trước mỗi câu;
+   - tạo thêm dải âm cao cho giọng sáng hơn, rồi nén và nhân đôi giọng như khi thu trong phòng thu.
 
-Kết quả nghe giống giọng hát máy kiểu "vocaloid": đúng nốt (lệch trung bình chưa tới 3 cent) nhưng chưa có cảm xúc như người thật. Nếu bạn hát được, cứ lấy lời và giai điệu hát lại rồi gửi mình tại [contact@buivandat.com](mailto:contact@buivandat.com). Mình rất muốn nghe!
+Kết quả hát đúng nốt (lệch trung bình khoảng 4 cent) và tự nhiên hơn bản đầu, nhưng vẫn là giọng máy, chưa có cảm xúc như người thật. Nếu bạn hát được, cứ lấy lời và giai điệu hát lại rồi gửi mình tại [contact@buivandat.com](mailto:contact@buivandat.com). Mình rất muốn nghe!
 
 ### Video: mỗi khung hình là một hàm của thời gian
 
