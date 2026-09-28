@@ -9,6 +9,11 @@ timezone: Asia/Ho_Chi_Minh
 email: contact@buivandat.com
 logo: /assets/img/icon-512.png
 image: /assets/img/og-image.png
+
+# Xác minh chủ sở hữu với công cụ tìm kiếm (bỏ dấu # và dán mã vào):
+# verification:
+#   google: MA_XAC_MINH_GOOGLE_SEARCH_CONSOLE
+#   bing: MA_XAC_MINH_BING_WEBMASTER
 author:
   name: Bùi Văn Đạt
   email: contact@buivandat.com
@@ -26,7 +31,6 @@ kramdown:
 
 plugins:
   - jekyll-feed
-  - jekyll-seo-tag
   - jekyll-sitemap
 
 feed:
@@ -43,8 +47,10 @@ defaults:
 exclude:
   - README.md
   - CNAME
+  - scripts
+  - package.json
+  - package-lock.json
+  - node_modules
   - Gemfile
   - Gemfile.lock
   - vendor
-twitter:
-  card: summary_large_image

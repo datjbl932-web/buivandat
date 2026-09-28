@@ -21,8 +21,8 @@ layout: default
   </header>
 
   <div class="container container--narrow">
-    {%- if page.image %}
-    <img class="article__cover" src="{{ page.image }}" alt="{{ page.image_alt | default: page.title }}">
+    {%- if page.cover %}
+    <img class="article__cover" src="{{ page.cover }}" alt="{{ page.cover_alt | default: page.title }}" width="1600" height="800">
     {%- endif %}
 
     <div class="prose">
