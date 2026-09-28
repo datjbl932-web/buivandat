@@ -6,7 +6,7 @@ Bài giới thiệu: https://buivandat.com/blog/khong-co-phep-mau-bai-hat-viet-b
 | File | Việc |
 |---|---|
 | `compose.py` | Soạn nhạc: lời, hợp âm, giai điệu theo thanh điệu tiếng Việt, phối khí, mix (kèm giọng hát nếu có `build/vocal.wav`) → `build/song.wav` + `build/song.json` |
-| `sing.py` | Giọng hát nam: Piper TTS đọc từng chữ → WORLD dựng lại thành nốt hát (cao độ, độ dài, luyến, rung) → `build/vocal.wav` |
+| `sing.py` | Giọng hát nam: Piper TTS đọc liền cả câu (ranh giới chữ dò bằng DTW) → WORLD dựng lại thành câu hát (ngân nguyên âm, luyến có đà, rung, luyến láy theo dấu, nhấn nhá, lấy hơi, mở rộng dải cao) → `build/vocal.wav` |
 | `../../assets/media/khong-co-phep-mau/scene.js` | Vẽ video: mỗi khung hình là một hàm của thời gian bài hát (dùng chung cho bản MP4 và trang `/nhac/khong-co-phep-mau/`) |
 | `render.html`, `render.js` | Xuất MP4 1080p30 bằng Chromium (Playwright) + ffmpeg |
 
