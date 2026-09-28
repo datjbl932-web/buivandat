@@ -24,6 +24,14 @@ BPM = 100.0
 BEAT = 60.0 / BPM
 BAR = 4 * BEAT
 RNG = np.random.default_rng(20260928)
+TRANSPOSE = -3  # hạ cả bài 3 nửa cung (La thứ -> Fa thăng thứ) cho vừa giọng nam
+KEY_LABEL = "Fa# thứ (F#m)"
+NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+
+
+def chord_label(name):
+    root = NOTE_NAMES[(ROOT[name] + TRANSPOSE) % 12]
+    return root + ("m" if name.endswith("m") else "")
 
 # ---------------------------------------------------------------- bố cục bài
 # (id, tên hiển thị, số ô nhịp)
@@ -233,7 +241,7 @@ T = np.arange(N) / SR
 
 
 def mtof(m):
-    return 440.0 * 2 ** ((m - 69) / 12)
+    return 440.0 * 2 ** ((m + TRANSPOSE - 69) / 12)
 
 
 def env_adsr(n, a, d, s, r, sr=SR):
@@ -475,6 +483,17 @@ def main(outdir):
                 add(pluck, t_bar + k * BEAT / 4, synth_pluck(seq[k % 8], BEAT / 4 * 1.8), 0.22 if sid != "intro" else 0.3)
 
     lead = synth_lead(notes)
+    vocal = np.zeros(N)
+    vpath = os.path.join(outdir, "vocal.wav")
+    has_vocal = os.path.exists(vpath)
+    if has_vocal:  # giọng hát từ sing.py
+        _, v = wavfile.read(vpath)
+        v = v.astype(np.float64) / 32767
+        vocal[: min(N, len(v))] = v[:N]
+        vocal = hp(vocal, 110)
+        vocal = vocal + bp(vocal, 2500, 5000) * 0.5      # rõ lời
+        vocal = vocal - bp(vocal, 250, 450) * 0.3        # bớt ù
+        lead = lead * 0.25                               # synth lùi xuống làm nền dẫn giai điệu
 
     # ---- trộn & hiệu ứng
     pad_d = pad * duck
@@ -484,23 +503,23 @@ def main(outdir):
     ir_n = int(2.2 * SR); ir_t = np.arange(ir_n) / SR
     ir = RNG.standard_normal((2, ir_n)) * np.exp(-ir_t * 3.2)
     ir[:, : int(0.012 * SR)] = 0
-    send = lead * 0.35 * 0.27 + pad_d * 0.25 + pluck_d * 0.35 + drums * 0.03
+    send = lead * 0.35 * 0.27 + vocal * 0.5 + pad_d * 0.25 + pluck_d * 0.35 + drums * 0.03
     send = hp(send, 250)
     rev = np.stack([fftconvolve(send, ir[c])[:N] for c in range(2)]) * 0.06
 
     dly = np.zeros((2, N))
     d_n = int(BEAT * 0.75 * SR)
     for c, off in enumerate([d_n, int(d_n * 1.5)]):
-        src = lp(lead, 2500) * 0.28 * 0.27
+        src = lp(lead, 2500) * 0.28 * 0.27 + lp(vocal, 5000) * 0.22
         for k in range(1, 4):
             dly[c, off * k:] += src[: N - off * k] * (0.45 ** k)
 
+    G = {"drums": 0.55, "bass": 0.36, "pad": 1.35, "pluck": 1.0, "lead": 0.27, "fx": 0.6, "vocal": 2.5}
     if os.environ.get("STEMS"):
-        for name, st in [("drums", drums), ("bass", bass_d), ("pad", pad_d), ("pluck", pluck_d), ("lead", lead), ("fx", fx)]:
+        for name, st in [("drums", drums * G["drums"]), ("bass", bass_d * G["bass"]), ("pad", pad_d * G["pad"]), ("pluck", pluck_d * G["pluck"]), ("lead", lead * G["lead"]), ("vocal", vocal * G["vocal"])]:
             print(f"  {name:6} rms {20*np.log10(np.sqrt((st**2).mean())+1e-9):6.1f}  peak {np.abs(st).max():.2f}")
-    G = {"drums": 0.62, "bass": 0.42, "pad": 1.35, "pluck": 1.0, "lead": 0.27, "fx": 0.6}
-    L = drums * G["drums"] + bass_d * G["bass"] + pad_d * G["pad"] * 0.95 + pluck_d * G["pluck"] * 1.15 + lead * G["lead"] + fx * G["fx"]
-    R = drums * G["drums"] + bass_d * G["bass"] + pad_d * G["pad"] * 1.05 + pluck_d * G["pluck"] * 0.85 + lead * G["lead"] + fx * G["fx"]
+    L = drums * G["drums"] + bass_d * G["bass"] + pad_d * G["pad"] * 0.95 + pluck_d * G["pluck"] * 1.15 + lead * G["lead"] + vocal * G["vocal"] + fx * G["fx"]
+    R = drums * G["drums"] + bass_d * G["bass"] + pad_d * G["pad"] * 1.05 + pluck_d * G["pluck"] * 0.85 + lead * G["lead"] + vocal * G["vocal"] + fx * G["fx"]
     mix = np.stack([L, R]) + rev + dly
     mix = hp(mix, 28)
     mix = mix + hp(mix, 2500) * 0.7   # kệ cao (high shelf) cho sáng
@@ -526,10 +545,10 @@ def main(outdir):
         "title": "Không Có Phép Màu",
         "artist": "buivandat.com",
         "bpm": BPM, "duration": round(TOTAL_BARS * BAR + 2.0, 3),
-        "key": "La thứ (Am)",
+        "key": KEY_LABEL, "vocal": has_vocal,
         "sections": sections,
         "beats": beats, "downbeats": downbeats, "kicks": kicks, "snares": snares,
-        "chords": [{"start": round(b * BAR, 4), "name": chord_at_bar(b)} for b in range(TOTAL_BARS)],
+        "chords": [{"start": round(b * BAR, 4), "name": chord_label(chord_at_bar(b))} for b in range(TOTAL_BARS)],
         "lines": lines,
         "envelope_fps": 30, "envelope": env,
     }
