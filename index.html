@@ -6,26 +6,23 @@ title: Bùi Văn Đạt – Tin tức, phần mềm & kinh nghiệm MMO
 <section class="hero">
   <div class="container hero__grid">
     <div class="hero__text">
-      <p class="label reveal"><span class="label__dot"></span>Sổ tay MMO · Số 01</p>
       <h1 class="hero__title reveal">
         Kiếm tiền online<br>
         không có phép màu.<br>
-        Chỉ có <em>kỷ luật</em>, công cụ<br class="br-md">
+        Chỉ có kỷ luật, công cụ<br class="br-md">
         và thông tin đúng.
       </h1>
       <div class="hero__intro reveal">
         <p>Mình là <strong>Đạt</strong>, người làm MMO đã nhiều năm. Ở đây mình ghi lại những gì đã làm, đã thử và đã trả giá: <strong>tin tức</strong> cần biết, <strong>phần mềm</strong> đáng dùng và <strong>kinh nghiệm</strong> để bạn đi đường ngắn hơn.</p>
-        <p class="signature">— Đạt</p>
       </div>
       <div class="hero__cta reveal">
-        <a class="btn" href="/blog/">Đọc sổ tay <span aria-hidden="true">→</span></a>
+        <a class="btn" href="/blog/">Đọc blog <span aria-hidden="true">→</span></a>
         <a class="link-u" href="mailto:{{ site.email }}">{{ site.email }}</a>
       </div>
     </div>
 
     <aside class="ledger reveal" aria-label="Mục lục">
-      <img class="ledger__seal" src="/assets/img/logo-mark.svg" alt="" width="84" height="84">
-      <p class="ledger__head"><span>Mục lục</span><span>Số bài</span></p>
+      <p class="ledger__head"><span>Chuyên mục</span><span>Số bài</span></p>
       <ol class="ledger__list">
         {%- for c in site.data.categories %}
         {%- assign n = site.posts | where: "category", c[0] | size %}
@@ -45,22 +42,13 @@ title: Bùi Văn Đạt – Tin tức, phần mềm & kinh nghiệm MMO
   </div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker__track">
-    {%- for i in (1..2) %}
-    <span>Affiliate</span><i>✦</i><span>Content &amp; Social</span><i>✦</i><span>Tool &amp; Automation</span><i>✦</i><span>Airdrop &amp; Web3</span><i>✦</i><span>Cảnh báo lừa đảo</span><i>✦</i><span>Quản lý tài khoản</span><i>✦</i><span>Tối ưu chi phí</span><i>✦</i>
-    {%- endfor %}
-  </div>
-</div>
 
 <!-- BÀI VIẾT MỚI -->
 {%- if site.posts.size > 0 %}
 <section class="section" id="bai-viet">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="sec-head__no">§ 01</span>
-      <h2>Mới trên sổ tay</h2>
+      <h2>Bài viết mới</h2>
       <a class="link-u" href="/blog/">Xem tất cả bài viết →</a>
     </header>
     <div class="entries">
@@ -73,10 +61,9 @@ title: Bùi Văn Đạt – Tin tức, phần mềm & kinh nghiệm MMO
 {%- endif %}
 
 <!-- VỀ MÌNH -->
-<section class="section section--paper2" id="ve-minh">
+<section class="section section--alt" id="ve-minh">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="sec-head__no">§ 02</span>
       <h2>Về mình</h2>
     </header>
     <div class="about">
@@ -84,14 +71,14 @@ title: Bùi Văn Đạt – Tin tức, phần mềm & kinh nghiệm MMO
         {%- if site.author.photo %}
         <img class="about__photo" src="{{ site.author.photo }}" alt="Bùi Văn Đạt">
         {%- else %}
-        <div class="about__mono" aria-hidden="true"><span>Đ</span></div>
+        <div class="about__mono" aria-hidden="true"><img src="/assets/img/logo-mark.svg" alt="" width="120" height="120"></div>
         {%- endif %}
         <figcaption><span>Bùi Văn Đạt</span><span>Người viết · buivandat.com</span></figcaption>
       </figure>
       <div class="about__text reveal">
         <p class="about__lead">Mình đã gắn bó với MMO nhiều năm, thử qua rất nhiều mô hình, thắng có mà thua cũng nhiều.</p>
-        <p class="dropcap">Điều mình nhận ra: người mới hiếm khi thiếu cơ hội. Họ thiếu <strong>thông tin đúng</strong>, <strong>công cụ phù hợp</strong> và một người chịu nói thật về rủi ro. Nhiều thứ được quảng cáo là “làm giàu nhanh” thật ra chỉ là cách nhanh nhất để mất tiền.</p>
-        <p>buivandat.com là cuốn sổ tay mình viết công khai: gọn gàng, không quảng cáo lố, không hứa hẹn làm giàu sau một đêm. Chỉ có những gì mình đã làm, số liệu mình đã thấy và công cụ mình thực sự dùng.</p>
+        <p>Điều mình nhận ra: người mới hiếm khi thiếu cơ hội. Họ thiếu <strong>thông tin đúng</strong>, <strong>công cụ phù hợp</strong> và một người chịu nói thật về rủi ro. Nhiều thứ được quảng cáo là “làm giàu nhanh” thật ra chỉ là cách nhanh nhất để mất tiền.</p>
+        <p>buivandat.com là nơi mình chia sẻ công khai: gọn gàng, không quảng cáo lố, không hứa hẹn làm giàu sau một đêm. Chỉ có những gì mình đã làm, số liệu mình đã thấy và công cụ mình thực sự dùng.</p>
         <dl class="facts">
           <div><dt>Lĩnh vực</dt><dd>MMO · Affiliate · Automation</dd></div>
           <div><dt>Cách viết</dt><dd>Thực chiến, từng bước</dd></div>
@@ -103,17 +90,16 @@ title: Bùi Văn Đạt – Tin tức, phần mềm & kinh nghiệm MMO
 </section>
 
 <!-- NGUYÊN TẮC -->
-<section class="section section--ink" id="nguyen-tac">
+<section class="section section--alt" id="nguyen-tac">
   <div class="container">
-    <header class="sec-head sec-head--light reveal">
-      <span class="sec-head__no">§ 03</span>
-      <h2>Bốn nguyên tắc của sổ tay này</h2>
+    <header class="sec-head reveal">
+      <h2>Nguyên tắc chia sẻ</h2>
     </header>
     <ol class="rules">
-      <li class="reveal"><span class="rules__no">I</span><h3>Thật</h3><p>Chỉ viết về những gì mình đã làm hoặc trực tiếp kiểm chứng. Không chép lại, không “nghe nói”.</p></li>
-      <li class="reveal"><span class="rules__no">II</span><h3>Nói rủi ro trước</h3><p>Vốn bao nhiêu, mất bao lâu, có thể mất gì. Lợi nhuận luôn đứng sau rủi ro.</p></li>
-      <li class="reveal"><span class="rules__no">III</span><h3>Hợp pháp</h3><p>Không cổ xuý lừa đảo, không lách luật, không vi phạm chính sách của nền tảng.</p></li>
-      <li class="reveal"><span class="rules__no">IV</span><h3>Làm theo được</h3><p>Hướng dẫn từng bước, người mới đọc xong cũng bắt tay vào làm được.</p></li>
+      <li class="reveal"><span class="rules__no">01</span><h3>Thật</h3><p>Chỉ viết về những gì mình đã làm hoặc trực tiếp kiểm chứng. Không chép lại, không “nghe nói”.</p></li>
+      <li class="reveal"><span class="rules__no">02</span><h3>Nói rủi ro trước</h3><p>Vốn bao nhiêu, mất bao lâu, có thể mất gì. Lợi nhuận luôn đứng sau rủi ro.</p></li>
+      <li class="reveal"><span class="rules__no">03</span><h3>Hợp pháp</h3><p>Không cổ xuý lừa đảo, không lách luật, không vi phạm chính sách của nền tảng.</p></li>
+      <li class="reveal"><span class="rules__no">04</span><h3>Làm theo được</h3><p>Hướng dẫn từng bước, người mới đọc xong cũng bắt tay vào làm được.</p></li>
     </ol>
   </div>
 </section>
@@ -122,7 +108,6 @@ title: Bùi Văn Đạt – Tin tức, phần mềm & kinh nghiệm MMO
 <section class="section" id="cong-cu">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="sec-head__no">§ 04</span>
       <h2>Kho công cụ</h2>
       <p class="sec-head__note">Đang biên soạn. Mỗi công cụ sẽ có bài hướng dẫn riêng.</p>
     </header>
@@ -131,16 +116,16 @@ title: Bùi Văn Đạt – Tin tức, phần mềm & kinh nghiệm MMO
         <span role="columnheader">Nhóm</span><span role="columnheader">Công cụ</span><span role="columnheader">Dùng để</span><span role="columnheader">Trạng thái</span>
       </div>
       <div class="tt-row" role="row">
-        <span role="cell" class="tt-tag">Automation</span><span role="cell" class="tt-name">Tool tự động hoá tác vụ</span><span role="cell">Giảm thao tác lặp lại, chạy nhiều việc cùng lúc</span><span role="cell"><span class="stamp">Đang viết</span></span>
+        <span role="cell" class="tt-tag">Automation</span><span role="cell" class="tt-name">Tool tự động hoá tác vụ</span><span role="cell">Giảm thao tác lặp lại, chạy nhiều việc cùng lúc</span><span role="cell"><span class="stamp">Sắp có</span></span>
       </div>
       <div class="tt-row" role="row">
-        <span role="cell" class="tt-tag">Quản lý</span><span role="cell" class="tt-name">Tài khoản &amp; profile</span><span role="cell">Tổ chức gọn gàng, an toàn khi làm số lượng lớn</span><span role="cell"><span class="stamp">Đang viết</span></span>
+        <span role="cell" class="tt-tag">Quản lý</span><span role="cell" class="tt-name">Tài khoản &amp; profile</span><span role="cell">Tổ chức gọn gàng, an toàn khi làm số lượng lớn</span><span role="cell"><span class="stamp">Sắp có</span></span>
       </div>
       <div class="tt-row" role="row">
-        <span role="cell" class="tt-tag">Content</span><span role="cell" class="tt-name">Hỗ trợ sáng tạo nội dung</span><span role="cell">Lên ý tưởng, viết, xử lý ảnh và video nhanh hơn</span><span role="cell"><span class="stamp">Đang viết</span></span>
+        <span role="cell" class="tt-tag">Content</span><span role="cell" class="tt-name">Hỗ trợ sáng tạo nội dung</span><span role="cell">Lên ý tưởng, viết, xử lý ảnh và video nhanh hơn</span><span role="cell"><span class="stamp">Sắp có</span></span>
       </div>
       <div class="tt-row" role="row">
-        <span role="cell" class="tt-tag">Tiện ích</span><span role="cell" class="tt-name">Extension &amp; tiện ích nhỏ</span><span role="cell">Những công cụ nhỏ nhưng dùng mỗi ngày</span><span role="cell"><span class="stamp">Đang viết</span></span>
+        <span role="cell" class="tt-tag">Tiện ích</span><span role="cell" class="tt-name">Extension &amp; tiện ích nhỏ</span><span role="cell">Những công cụ nhỏ nhưng dùng mỗi ngày</span><span role="cell"><span class="stamp">Sắp có</span></span>
       </div>
     </div>
     <p class="tools-more reveal">Đã có bài nhập môn: <a class="link-u" href="/blog/?cat=phan-mem">xem các bài về phần mềm →</a></p>
@@ -148,11 +133,10 @@ title: Bùi Văn Đạt – Tin tức, phần mềm & kinh nghiệm MMO
 </section>
 
 <!-- LIÊN HỆ -->
-<section class="section section--paper2" id="lien-he">
+<section class="section" id="lien-he">
   <div class="container">
     <header class="sec-head reveal">
-      <span class="sec-head__no">§ 05</span>
-      <h2>Viết cho Đạt</h2>
+      <h2>Liên hệ</h2>
     </header>
     <div class="contact">
       <div class="contact__text reveal">

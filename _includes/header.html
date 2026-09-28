@@ -2,13 +2,6 @@
 {%- assign in_blog = false -%}
 {%- if page.layout == 'post' or page.url contains '/blog/' -%}{%- assign in_blog = true -%}{%- endif -%}
 <header class="nav" id="top">
-  <div class="masthead">
-    <div class="container masthead__inner">
-      <span>Sổ tay MMO của Bùi Văn Đạt</span>
-      <span class="masthead__mid">Tin tức · Phần mềm · Kinh nghiệm</span>
-      <span>{{ site.posts.size }} bài viết{% if site.posts.size > 0 %} · Mới nhất {{ site.posts.first.date | date: "%d.%m.%Y" }}{% endif %}</span>
-    </div>
-  </div>
   <div class="container nav__inner">
     <a class="brand" href="/" aria-label="buivandat.com – Trang chủ">
       <img class="brand__seal" src="/assets/img/logo-mark.svg" alt="" width="38" height="38">

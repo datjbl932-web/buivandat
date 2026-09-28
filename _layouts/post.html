@@ -7,7 +7,7 @@ layout: default
   <header class="article__head">
     <div class="container container--mid">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Trang chủ</a><span>/</span><a href="/blog/">Sổ tay</a>
+        <a href="/">Trang chủ</a><span>/</span><a href="/blog/">Blog</a>
         {%- if cat %}<span>/</span><a href="/blog/?cat={{ page.category }}">{{ cat.name }}</a>{% endif %}
       </nav>
       <h1 class="article__title">{{ page.title }}</h1>
@@ -28,7 +28,6 @@ layout: default
     <div class="prose">
       {{ content }}
     </div>
-    <p class="endmark" aria-hidden="true"><img src="/assets/img/logo-mark.svg" alt="" width="22" height="22"></p>
 
     <aside class="author-box">
       <img src="{% if site.author.photo %}{{ site.author.photo }}{% else %}/assets/img/logo-mark.svg{% endif %}" alt="" width="64" height="64">
@@ -62,11 +61,10 @@ layout: default
 {%- assign related = site.posts | where: "category", page.category | where_exp: "p", "p.url != page.url" -%}
 {%- if related.size == 0 -%}{%- assign related = site.posts | where_exp: "p", "p.url != page.url" -%}{%- endif -%}
 {%- if related.size > 0 %}
-<section class="section section--paper2">
+<section class="section section--alt">
   <div class="container">
     <header class="sec-head">
-      <span class="sec-head__no">§</span>
-      <h2>Đọc tiếp</h2>
+      <h2>Bài viết liên quan</h2>
       <a class="link-u" href="/blog/">Tất cả bài viết →</a>
     </header>
     <div class="entries">

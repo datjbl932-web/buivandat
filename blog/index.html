@@ -1,15 +1,15 @@
 ---
 layout: default
-title: Sổ tay MMO
+title: Blog
 description: Tin tức MMO, phần mềm hữu ích và kinh nghiệm kiếm tiền online thực chiến – ghi chép bởi Đạt tại buivandat.com.
 scripts:
   - /assets/js/blog.js
 ---
 <section class="page-head">
   <div class="container">
-    <p class="label"><span class="label__dot"></span>Blog · {{ site.posts.size }} bài viết</p>
-    <h1 class="page-head__title">Sổ tay <em>MMO</em></h1>
-    <p class="page-head__lead">Tin tức, phần mềm và kinh nghiệm thực chiến. Viết ngắn gọn, nói thật, làm theo được.</p>
+    <p class="label">{{ site.posts.size }} bài viết</p>
+    <h1 class="page-head__title">Blog</h1>
+    <p class="page-head__lead">Tin tức, phần mềm và kinh nghiệm thực chiến. Viết ngắn gọn, dễ hiểu, dễ áp dụng.</p>
 
     <div class="blog-tools">
       <div class="tabs" role="group" aria-label="Lọc theo chuyên mục">
@@ -42,7 +42,6 @@ scripts:
     </div>
     {%- endif %}
     <div class="empty" id="post-empty"{% if site.posts.size > 0 %} hidden{% endif %}>
-      <p class="empty__big">∅</p>
       <h3>Chưa có bài viết phù hợp</h3>
       <p>Thử từ khoá khác hoặc chọn “Tất cả”.</p>
     </div>
