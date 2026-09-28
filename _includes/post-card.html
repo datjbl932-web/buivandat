@@ -7,7 +7,7 @@
     {%- if cat %}<a class="entry__cat" href="/blog/?cat={{ p.category }}">{{ cat.name }}</a>{% endif %}
   </div>
   <div class="entry__main">
-    {%- if p.image and include.lead %}<img class="entry__img" src="{{ p.image }}" alt="" loading="lazy">{% endif %}
+    {%- if p.cover and include.lead %}<img class="entry__img" src="{{ p.cover }}" alt="" loading="lazy" width="1600" height="800">{% endif %}
     <h3 class="entry__title"><a href="{{ p.url }}">{{ p.title }}</a></h3>
     <p class="entry__sum">{{ summary | truncate: 170 }}</p>
   </div>

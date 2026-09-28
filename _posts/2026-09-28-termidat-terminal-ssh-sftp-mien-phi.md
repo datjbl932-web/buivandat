@@ -3,8 +3,11 @@ title: "Termidat: terminal miễn phí có sẵn SSH và SFTP, mình tự làm"
 date: 2026-09-28 11:00:00 +0700
 category: phan-mem
 description: "Quản lý nhiều VPS, SSH, tải file qua SFTP và chia nhiều khung terminal trong một ứng dụng duy nhất. Miễn phí, mã nguồn mở, chạy trên Windows, macOS và Linux."
-image: /assets/img/posts/termidat-cover.jpg
-image_alt: "Biểu tượng và tên phần mềm Termidat"
+cover: /assets/img/posts/termidat-cover.jpg
+cover_alt: "Biểu tượng và tên phần mềm Termidat"
+seo_title: "Termidat – terminal miễn phí có SSH, SFTP | buivandat.com"
+og_title: "Termidat: terminal miễn phí có sẵn SSH và SFTP"
+og_icon: /assets/img/posts/termidat-icon.png
 ---
 
 Làm MMO lâu, sớm muộn bạn cũng phải thuê **VPS** để chạy tool, bot hay những tác vụ cần bật 24/7. Lúc đó, mỗi ngày sẽ lặp đi lặp lại mấy việc: mở terminal, SSH vào server, tải file lên, xem log, rồi lại chuyển sang server khác.
@@ -21,7 +24,7 @@ Termidat là phần mềm terminal chạy trên **Windows, macOS và Linux**, l�
 Bạn không cần cài thêm PuTTY hay WinSCP.
 
 <figure>
-  <a href="/assets/img/posts/termidat-ssh-sftp.jpg"><img src="/assets/img/posts/termidat-ssh-sftp.jpg" alt="Termidat đang kết nối SSH tới một VPS, chia 2 khung và mở bảng SFTP" loading="lazy"></a>
+  <a href="/assets/img/posts/termidat-ssh-sftp.jpg"><img src="/assets/img/posts/termidat-ssh-sftp.jpg" alt="Termidat đang kết nối SSH tới một VPS, chia 2 khung và mở bảng SFTP" loading="lazy" width="1600" height="956"></a>
   <figcaption>Một tab SSH chia 2 khung: bên trái gõ lệnh, bên phải theo dõi log. Bảng SFTP mở ngay bên cạnh. Ảnh chụp từ ứng dụng thật, kết nối tới server thử nghiệm.</figcaption>
 </figure>
 
@@ -43,7 +46,7 @@ Bạn không cần cài thêm PuTTY hay WinSCP.
 - **Kiểm tra vân tay khoá của server** và cảnh báo khi khoá thay đổi, giúp phát hiện tấn công giả mạo server (man-in-the-middle).
 
 <figure>
-  <a href="/assets/img/posts/termidat-quan-ly-ssh.jpg"><img src="/assets/img/posts/termidat-quan-ly-ssh.jpg" alt="Cửa sổ quản lý hồ sơ SSH của Termidat, các server được chia theo nhóm" loading="lazy"></a>
+  <a href="/assets/img/posts/termidat-quan-ly-ssh.jpg"><img src="/assets/img/posts/termidat-quan-ly-ssh.jpg" alt="Cửa sổ quản lý hồ sơ SSH của Termidat, các server được chia theo nhóm" loading="lazy" width="1600" height="956"></a>
   <figcaption>Hồ sơ SSH chia theo nhóm, bấm “Kết nối” là vào. Địa chỉ IP trong ảnh là dữ liệu mẫu.</figcaption>
 </figure>
 
@@ -69,7 +72,7 @@ Trong tab SSH, bấm `Ctrl+Shift+O` hoặc nút **SFTP** để mở bảng duy�
 Có sẵn **6 theme**: Termidat Dark, Dracula, One Dark, Nord, Solarized Dark, GitHub Light. Bạn chỉnh được font, cỡ chữ, giãn dòng, kiểu con trỏ, số dòng lưu lại, tự sao chép khi bôi đen và hành vi chuột phải.
 
 <figure>
-  <a href="/assets/img/posts/termidat-cai-dat.jpg"><img src="/assets/img/posts/termidat-cai-dat.jpg" alt="Cửa sổ cài đặt của Termidat với theme Dracula" loading="lazy"></a>
+  <a href="/assets/img/posts/termidat-cai-dat.jpg"><img src="/assets/img/posts/termidat-cai-dat.jpg" alt="Cửa sổ cài đặt của Termidat với theme Dracula" loading="lazy" width="1600" height="956"></a>
   <figcaption>Cửa sổ cài đặt: đổi theme là xem trước ngay, không cần khởi động lại.</figcaption>
 </figure>
 

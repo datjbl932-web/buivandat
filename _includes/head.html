@@ -1,11 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#FFFFFF">
-{% seo %}
-{%- unless page.image %}
-<meta property="og:image" content="{{ site.image | absolute_url }}">
-<meta name="twitter:image" content="{{ site.image | absolute_url }}">
-{%- endunless %}
+{% include seo.html %}
 {% feed_meta %}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="any">

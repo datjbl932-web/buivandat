@@ -1,0 +1,166 @@
+{%- comment -%}
+  Thẻ SEO & chia sẻ mạng xã hội (Facebook, Zalo, Telegram, X…).
+  Ảnh chia sẻ được chọn theo thứ tự:
+    1. `image:` trong phần đầu trang/bài (nếu có)
+    2. assets/img/og/<slug>.png (tạo bằng scripts/og-images.js)
+    3. Ảnh mặc định của website (site.image)
+{%- endcomment -%}
+{%- assign is_post = false -%}{%- if page.layout == 'post' -%}{%- assign is_post = true -%}{%- endif -%}
+{%- assign is_home = false -%}{%- if page.url == '/' -%}{%- assign is_home = true -%}{%- endif -%}
+{%- assign cat = site.data.categories[page.category] -%}
+
+{%- if page.seo_title -%}
+  {%- assign seo_title = page.seo_title -%}
+{%- elsif is_home -%}
+  {%- assign seo_title = page.title | default: site.tagline -%}
+{%- elsif page.title == nil -%}
+  {%- capture seo_title -%}{{ site.tagline }} | {{ site.title }}{%- endcapture -%}
+{%- else -%}
+  {%- capture seo_title -%}{{ page.title }} | {{ site.title }}{%- endcapture -%}
+{%- endif -%}
+{%- comment -%} seo_title: tiêu đề ngắn hơn cho Google (khoảng 60 ký tự) {%- endcomment -%}
+{%- assign og_title = page.title | default: site.title -%}
+
+{%- if page.description -%}
+  {%- assign seo_desc = page.description -%}
+{%- elsif is_post -%}
+  {%- assign seo_desc = page.excerpt | strip_html | normalize_whitespace | truncate: 160 -%}
+{%- else -%}
+  {%- assign seo_desc = site.description -%}
+{%- endif -%}
+{%- assign seo_desc = seo_desc | strip_html | normalize_whitespace -%}
+
+{%- assign canonical = page.url | replace: 'index.html', '' | absolute_url -%}
+
+{%- assign img_path = site.image -%}{%- assign img_w = 1200 -%}{%- assign img_h = 630 -%}
+{%- assign img_alt = site.title | append: ' – ' | append: site.tagline -%}
+{%- if page.image -%}
+  {%- assign img_path = page.image.path | default: page.image -%}
+  {%- assign img_w = page.image.width -%}{%- assign img_h = page.image.height -%}
+  {%- assign img_alt = page.image.alt | default: og_title -%}
+{%- elsif is_post -%}
+  {%- assign og_file = '/assets/img/og/' | append: page.slug | append: '.png' -%}
+  {%- assign og_found = site.static_files | where: 'path', og_file | first -%}
+  {%- if og_found -%}{%- assign img_path = og_file -%}{%- assign img_alt = og_title -%}{%- endif -%}
+{%- endif -%}
+{%- assign img_url = img_path | absolute_url -%}
+<title>{{ seo_title | escape }}</title>
+<meta name="description" content="{{ seo_desc | escape }}">
+<meta name="author" content="{{ page.author | default: site.author.name | escape }}">
+{%- if page.noindex or page.url == '/404.html' %}
+<meta name="robots" content="noindex, follow">
+{%- else %}
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="{{ canonical }}">
+{%- endif %}
+{%- if site.verification.google %}
+<meta name="google-site-verification" content="{{ site.verification.google }}">
+{%- endif %}
+{%- if site.verification.bing %}
+<meta name="msvalidate.01" content="{{ site.verification.bing }}">
+{%- endif %}
+
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:type" content="{% if is_post %}article{% else %}website{% endif %}">
+<meta property="og:title" content="{{ og_title | escape }}">
+<meta property="og:description" content="{{ seo_desc | escape }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:image" content="{{ img_url }}">
+<meta property="og:image:secure_url" content="{{ img_url }}">
+{%- if img_w and img_h %}
+<meta property="og:image:width" content="{{ img_w }}">
+<meta property="og:image:height" content="{{ img_h }}">
+{%- endif %}
+<meta property="og:image:alt" content="{{ img_alt | escape }}">
+{%- if is_post %}
+<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+<meta property="article:modified_time" content="{{ page.last_modified_at | default: page.date | date_to_xmlschema }}">
+<meta property="article:author" content="{{ site.author.name }}">
+{%- if cat %}
+<meta property="article:section" content="{{ cat.name }}">
+{%- endif %}
+{%- endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title | escape }}">
+<meta name="twitter:description" content="{{ seo_desc | escape }}">
+<meta name="twitter:image" content="{{ img_url }}">
+<meta name="twitter:image:alt" content="{{ img_alt | escape }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.url }}/#website",
+      "url": "{{ site.url }}/",
+      "name": {{ site.title | jsonify }},
+      "description": {{ site.description | jsonify }},
+      "inLanguage": "vi-VN",
+      "publisher": { "@id": "{{ site.url }}/#site-org" }
+    },
+    {
+      "@type": "Person",
+      "@id": "{{ site.url }}/#dat",
+      "name": {{ site.author.name | jsonify }},
+      "url": "{{ site.url }}/",
+      "email": "mailto:{{ site.email }}"
+    },
+    {
+      "@type": "Organization",
+      "@id": "{{ site.url }}/#site-org",
+      "name": {{ site.title | jsonify }},
+      "url": "{{ site.url }}/",
+      "logo": { "@type": "ImageObject", "url": "{{ site.url }}/assets/img/icon-512.png", "width": 512, "height": 512 },
+      "founder": { "@id": "{{ site.url }}/#dat" }
+    }
+    {%- if is_post %},
+    {
+      "@type": "BlogPosting",
+      "@id": "{{ canonical }}#article",
+      "mainEntityOfPage": "{{ canonical }}",
+      "url": "{{ canonical }}",
+      "headline": {{ page.title | jsonify }},
+      "description": {{ seo_desc | jsonify }},
+      "image": { "@type": "ImageObject", "url": "{{ img_url }}"{% if img_w and img_h %}, "width": {{ img_w }}, "height": {{ img_h }}{% endif %} },
+      "datePublished": "{{ page.date | date_to_xmlschema }}",
+      "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+      "inLanguage": "vi-VN",
+      {%- if cat %}
+      "articleSection": {{ cat.name | jsonify }},
+      {%- endif %}
+      "wordCount": {{ page.content | strip_html | number_of_words }},
+      "author": { "@id": "{{ site.url }}/#dat" },
+      "publisher": { "@id": "{{ site.url }}/#site-org" },
+      "isPartOf": { "@id": "{{ site.url }}/#website" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "{{ site.url }}/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ site.url }}/blog/" },
+        { "@type": "ListItem", "position": 3, "name": {{ page.title | jsonify }}, "item": "{{ canonical }}" }
+      ]
+    }
+    {%- elsif page.url == '/blog/' %},
+    {
+      "@type": "CollectionPage",
+      "@id": "{{ canonical }}#page",
+      "url": "{{ canonical }}",
+      "name": {{ og_title | jsonify }},
+      "description": {{ seo_desc | jsonify }},
+      "inLanguage": "vi-VN",
+      "isPartOf": { "@id": "{{ site.url }}/#website" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "{{ site.url }}/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ canonical }}" }
+      ]
+    }
+    {%- endif %}
+  ]
+}
+</script>
