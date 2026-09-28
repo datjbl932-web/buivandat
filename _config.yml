@@ -48,6 +48,7 @@ exclude:
   - README.md
   - CNAME
   - scripts
+  - music
   - package.json
   - package-lock.json
   - node_modules

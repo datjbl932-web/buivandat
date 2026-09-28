@@ -1,0 +1,91 @@
+---
+layout: null
+title: Không Có Phép Màu – bản chạy trực tiếp
+description: Music video "Không Có Phép Màu" của buivandat.com, vẽ trực tiếp trên trình duyệt bằng code và đồng bộ theo nhạc.
+image:
+  path: /assets/media/khong-co-phep-mau/og.jpg
+  width: 1200
+  height: 630
+  alt: Khung hình music video Không Có Phép Màu
+---
+<!doctype html>
+<html lang="vi">
+<head>
+  {% include head.html %}
+  <style>
+    html, body { height: 100%; }
+    body { margin: 0; background: #0B0B0C; color: #F2F0EB; font-family: "Be Vietnam Pro", system-ui, sans-serif; display: flex; flex-direction: column; }
+    .stage { position: relative; flex: 1; display: grid; place-items: center; min-height: 0; padding: 16px; }
+    .frame { position: relative; width: min(100%, calc((100vh - 120px) * 16 / 9)); aspect-ratio: 16 / 9; }
+    canvas { width: 100%; height: 100%; display: block; background: #0B0B0C; }
+    .play { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(11, 11, 12, .55); border: 0; color: inherit; cursor: pointer; font: inherit; }
+    .play span { display: inline-flex; align-items: center; gap: 12px; background: #F2F0EB; color: #0B0B0C; font-weight: 700; font-size: 1.05rem; padding: 14px 24px; border-radius: 999px; }
+    .play[hidden] { display: none; }
+    .bar { display: flex; align-items: center; gap: 16px; padding: 12px 20px 18px; font-size: .9rem; color: #A7A39C; flex-wrap: wrap; }
+    .bar button { font: inherit; color: #F2F0EB; background: transparent; border: 1px solid #3A3936; border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+    .bar button:hover { border-color: #F2F0EB; }
+    .bar input[type=range] { flex: 1 1 200px; accent-color: #F2F0EB; }
+    .bar a { color: #F2F0EB; }
+    .time { font-variant-numeric: tabular-nums; min-width: 96px; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="frame">
+      <canvas id="c" width="1920" height="1080" aria-label="Music video Không Có Phép Màu"></canvas>
+      <button class="play" id="play" type="button"><span>▶ Phát "Không Có Phép Màu"</span></button>
+    </div>
+  </div>
+  <div class="bar">
+    <button id="toggle" type="button">Phát</button>
+    <span class="time" id="time">0:00 / 2:02</span>
+    <input id="seek" type="range" min="0" max="122" step="0.1" value="0" aria-label="Tua">
+    <a href="/blog/khong-co-phep-mau-bai-hat-viet-bang-code/">Lời bài hát & cách làm</a>
+    <a href="/">buivandat.com</a>
+  </div>
+  <audio id="audio" src="/assets/media/khong-co-phep-mau/song.mp3" preload="auto"></audio>
+  <script src="/assets/media/khong-co-phep-mau/scene.js"></script>
+  <script>
+  (async function () {
+    var canvas = document.getElementById('c'), audio = document.getElementById('audio');
+    var play = document.getElementById('play'), toggle = document.getElementById('toggle');
+    var seek = document.getElementById('seek'), time = document.getElementById('time');
+    var data = await (await fetch('/assets/media/khong-co-phep-mau/song.json')).json();
+    await document.fonts.ready;
+    var video = KhongCoPhepMau.create(canvas, data);
+    seek.max = data.duration;
+
+    // độ phân giải canvas theo kích thước hiển thị (tối đa 1080p) để máy yếu vẫn mượt
+    function resize() {
+      var w = Math.min(1920, Math.round(canvas.clientWidth * (window.devicePixelRatio || 1)));
+      if (w && canvas.width !== w) { canvas.width = w; canvas.height = Math.round(w * 9 / 16); }
+    }
+    window.addEventListener('resize', resize); resize();
+
+    function fmt(s) { s = Math.max(0, s); return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
+    var t = 8.6; // khung hình chờ: tên bài
+    function loop() {
+      if (!audio.paused) t = audio.currentTime;
+      video.draw(Math.min(t, data.duration - 0.01));
+      time.textContent = fmt(audio.paused ? audio.currentTime : t) + ' / ' + fmt(data.duration);
+      if (!seek.matches(':active')) seek.value = audio.currentTime;
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    function start() { audio.play(); play.hidden = true; }
+    play.addEventListener('click', start);
+    toggle.addEventListener('click', function () { audio.paused ? start() : audio.pause(); });
+    audio.addEventListener('play', function () { toggle.textContent = 'Tạm dừng'; });
+    audio.addEventListener('pause', function () { toggle.textContent = 'Phát'; t = audio.currentTime; });
+    audio.addEventListener('ended', function () { play.hidden = false; });
+    seek.addEventListener('input', function () { audio.currentTime = +seek.value; t = +seek.value; play.hidden = true; });
+    document.addEventListener('keydown', function (e) {
+      if (e.code === 'Space') { e.preventDefault(); audio.paused ? start() : audio.pause(); }
+      if (e.code === 'ArrowRight') { audio.currentTime += 5; t = audio.currentTime; }
+      if (e.code === 'ArrowLeft') { audio.currentTime -= 5; t = audio.currentTime; }
+    });
+  })();
+  </script>
+</body>
+</html>
