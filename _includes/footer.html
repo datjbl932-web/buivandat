@@ -1,22 +1,33 @@
 <footer class="footer">
-  <div class="container footer__inner">
-    <div class="footer__brand">
-      <a class="brand brand--light" href="/">
-        <img src="/assets/img/logo-mark.svg" alt="" width="32" height="32">
-        <span>buivandat<em>.com</em></span>
-      </a>
-      <p>Tin tức, phần mềm &amp; kinh nghiệm MMO – chia sẻ bởi Đạt.</p>
+  <div class="container">
+    <div class="footer__top">
+      <div>
+        <a class="brand" href="/">
+          <img class="brand__seal" src="/assets/img/logo-mark.svg" alt="" width="32" height="32">
+          <span class="brand__name">buivandat<em>.com</em></span>
+        </a>
+        <p class="footer__tag">Tin tức, phần mềm và kinh nghiệm MMO, chia sẻ bởi Đạt.</p>
+      </div>
+      <div class="footer__cols">
+        <div>
+          <h2 class="label">Đọc</h2>
+          <a href="/blog/">Tất cả bài viết</a>
+          {%- for c in site.data.categories %}
+          <a href="/blog/?cat={{ c[0] }}">{{ c[1].name }}</a>
+          {%- endfor %}
+        </div>
+        <div>
+          <h2 class="label">Kết nối</h2>
+          <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+          <a href="/feed.xml">RSS</a>
+          <a href="/#ve-minh">Về Đạt</a>
+        </div>
+      </div>
     </div>
-    <nav class="footer__links" aria-label="Liên kết cuối trang">
-      <a href="/#gioi-thieu">Giới thiệu</a>
-      <a href="/blog/">Blog</a>
-      <a href="/feed.xml">RSS</a>
-      <a href="mailto:{{ site.email }}">{{ site.email }}</a>
-    </nav>
-  </div>
-  <div class="container footer__bottom">
-    <small>© <span id="year">{{ site.time | date: "%Y" }}</span> buivandat.com. Nội dung chỉ mang tính chia sẻ kinh nghiệm, không phải lời khuyên đầu tư.</small>
-    <a href="#top" class="to-top" aria-label="Lên đầu trang">↑</a>
+    <div class="footer__bottom">
+      <small>© <span id="year">{{ site.time | date: "%Y" }}</span> Bùi Văn Đạt. Nội dung mang tính chia sẻ kinh nghiệm, không phải lời khuyên đầu tư.</small>
+      <a href="#top" class="to-top" aria-label="Lên đầu trang">↑</a>
+    </div>
   </div>
 </footer>
 <div class="toast" role="status" aria-live="polite"></div>

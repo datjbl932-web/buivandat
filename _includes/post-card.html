@@ -1,18 +1,16 @@
 {%- assign p = include.post -%}
 {%- assign cat = site.data.categories[p.category] -%}
 {%- capture summary -%}{% if p.description %}{{ p.description }}{% else %}{{ p.excerpt | strip_html | strip }}{% endif %}{%- endcapture -%}
-<article class="post-card reveal" data-cat="{{ p.category }}" data-search="{{ p.title | append: ' ' | append: summary | downcase | escape }}">
-  <a class="post-card__thumb post-card__thumb--{{ cat.color | default: 'green' }}" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
-    {%- if p.image -%}
-    <img src="{{ p.image }}" alt="" loading="lazy">
-    {%- else -%}
-    <svg viewBox="0 0 24 24">{{ cat.icon }}</svg>
-    {%- endif -%}
-  </a>
-  <div class="post-card__body">
-    {%- if cat %}<a class="cat cat--{{ cat.color }}" href="/blog/?cat={{ p.category }}">{{ cat.name }}</a>{% endif %}
-    <h3><a href="{{ p.url }}">{{ p.title }}</a></h3>
-    <p>{{ summary | truncate: 150 }}</p>
-    <div class="meta">{% include post-meta.html post=p %}</div>
+<article class="entry{% if include.lead %} entry--lead{% endif %} reveal" data-cat="{{ p.category }}" data-search="{{ p.title | append: ' ' | append: summary | downcase | escape }}">
+  <div class="entry__meta">
+    <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: "%d.%m.%Y" }}</time>
+    {%- if cat %}<a class="entry__cat" href="/blog/?cat={{ p.category }}">{{ cat.name }}</a>{% endif %}
   </div>
+  <div class="entry__main">
+    {%- if p.image and include.lead %}<img class="entry__img" src="{{ p.image }}" alt="" loading="lazy">{% endif %}
+    <h3 class="entry__title"><a href="{{ p.url }}">{{ p.title }}</a></h3>
+    <p class="entry__sum">{{ summary | truncate: 170 }}</p>
+  </div>
+  {%- assign words = p.content | strip_html | number_of_words -%}
+  <span class="entry__read">{{ words | divided_by: 250 | plus: 1 }} phút <span aria-hidden="true">→</span></span>
 </article>

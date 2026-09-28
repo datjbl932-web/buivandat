@@ -13,7 +13,8 @@ Website dùng **Jekyll**, GitHub Pages tự động build mỗi khi có thay đ�
 3. Sửa phần đầu file (tiêu đề, ngày, chuyên mục, mô tả), rồi viết nội dung bằng Markdown.
 4. Bấm **Commit** – khoảng 1 phút sau bài sẽ xuất hiện ở `buivandat.com/blog/duong-dan/`.
 
-Chuyên mục (`category`): `tin-tuc`, `phan-mem`, `kinh-nghiem` (khai báo trong `_data/categories.yml`).
+Chuyên mục (`category`): `tin-tuc`, `phan-mem`, `kinh-nghiem` (tên và mô tả khai báo trong `_data/categories.yml`).
+Ảnh chân dung ở mục "Về mình": đặt ảnh vào `assets/img/` và điền `photo:` trong `_config.yml`.
 Ảnh bìa không bắt buộc – đặt ảnh vào `assets/img/posts/` và thêm dòng `image: /assets/img/posts/ten-anh.jpg`.
 Bài có ngày trong tương lai sẽ chưa được đăng cho tới ngày đó.
 
