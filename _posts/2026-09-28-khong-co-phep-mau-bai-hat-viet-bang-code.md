@@ -3,7 +3,7 @@ title: "Không Có Phép Màu: bài hát và music video viết hoàn toàn bằ
 seo_title: "Không Có Phép Màu – bài hát & MV viết bằng code | buivandat.com"
 date: 2026-09-28 11:45:00 +0700
 category: am-nhac
-description: "Bài hát đầu tiên của buivandat.com: nhạc, giai điệu và video đều được tạo bằng code. Lời nói về kiếm tiền online không có phép màu, chỉ có kỷ luật, công cụ và thông tin đúng."
+description: "Bài hát đầu tiên của buivandat.com, giọng nam: nhạc, giai điệu, giọng hát và video đều được tạo bằng code. Lời nói về kiếm tiền online không có phép màu, chỉ có kỷ luật, công cụ và thông tin đúng."
 image:
   path: /assets/media/khong-co-phep-mau/og.jpg
   width: 1200
@@ -24,7 +24,7 @@ Câu mình hay nói nhất khi có người hỏi về MMO là: **kiếm tiền 
   <video controls playsinline preload="metadata" poster="/assets/media/khong-co-phep-mau/poster.jpg" width="1920" height="1080">
     <source src="/assets/media/khong-co-phep-mau/khong-co-phep-mau.mp4" type="video/mp4">
   </video>
-  <figcaption>Không Có Phép Màu · 2:02 · 100 BPM · La thứ. <a href="/nhac/khong-co-phep-mau/">Xem bản chạy trực tiếp trên trình duyệt</a> hoặc <a href="/assets/media/khong-co-phep-mau/song.mp3" download>tải MP3</a>.</figcaption>
+  <figcaption>Không Có Phép Màu · giọng nam · 2:02 · 100 BPM · Fa thăng thứ. <a href="/nhac/khong-co-phep-mau/">Xem bản chạy trực tiếp trên trình duyệt</a> hoặc <a href="/assets/media/khong-co-phep-mau/song.mp3" download>tải MP3</a>.</figcaption>
 </figure>
 
 ## Lời bài hát
@@ -78,13 +78,23 @@ Tiếng Việt có thanh điệu, nên giai điệu phải "nói" được lời
 - Chữ mang dấu **huyền, nặng** thì nốt đi **xuống**, dấu **hỏi** xuống nhẹ.
 - Chữ **không dấu** thì giữ gần nốt cũ.
 
-Sau đó mỗi nốt được bám vào âm giai La thứ và hợp âm của ô nhịp (Am – F – C – G). Bước nhảy giữa hai chữ không vượt quá một quãng 4 cho dễ hát. Câu hook "Không có phép màu" lần nào cũng dùng đúng một giai điệu để dễ nhớ.
+Sau đó mỗi nốt được bám vào âm giai và hợp âm của từng ô nhịp (vòng hợp âm F#m – D – A – E). Cả bài được hạ xuống Fa thăng thứ để vừa quãng giọng nam, từ Si2 đến Fa#4. Bước nhảy giữa hai chữ không vượt quá một quãng 4 cho dễ hát. Câu hook "Không có phép màu" lần nào cũng dùng đúng một giai điệu để dễ nhớ.
 
 ### Phối khí
 
 Trống, bass, pad, arpeggio và cây synth hát giai điệu đều được tổng hợp từ sóng âm cơ bản (sin, răng cưa, vuông, nhiễu) bằng Python. Có thêm reverb, delay và "sidechain" cho pad nhún theo tiếng trống.
 
-> Phần "giọng hát" trong bản này là **một cây synth chơi đúng giai điệu của từng chữ**, chưa phải giọng người. Nếu bạn hát được, cứ lấy lời và giai điệu hát lại rồi gửi mình tại [contact@buivandat.com](mailto:contact@buivandat.com). Mình rất muốn nghe!
+### Giọng hát: từ giọng đọc thành giọng hát
+
+Giọng nam trong bài **không phải người thật hát**. Nó được làm theo hai bước:
+
+1. **Đọc:** một giọng đọc tiếng Việt tổng hợp ([Piper TTS](https://github.com/rhasspy/piper), giọng nam trong bộ dữ liệu VIVOS) đọc từng chữ của lời.
+2. **Hát:** bộ phân tích giọng [WORLD](https://github.com/mmorise/World) tách mỗi chữ thành cao độ, âm sắc và hơi. Sau đó chương trình dựng lại chữ đó thành nốt hát:
+   - kéo về đúng cao độ và độ dài của nốt nhạc;
+   - luyến sang nốt sau, rung (vibrato) ở nốt dài;
+   - phụ âm đầu được hát sớm hơn phách một chút, như ca sĩ thật.
+
+Kết quả nghe giống giọng hát máy kiểu "vocaloid": đúng nốt (lệch trung bình chưa tới 3 cent) nhưng chưa có cảm xúc như người thật. Nếu bạn hát được, cứ lấy lời và giai điệu hát lại rồi gửi mình tại [contact@buivandat.com](mailto:contact@buivandat.com). Mình rất muốn nghe!
 
 ### Video: mỗi khung hình là một hàm của thời gian
 
@@ -103,7 +113,13 @@ Mỗi đoạn nhạc có một cảnh riêng, lấy hình ảnh từ chính côn
 
 Cách làm này mình học từ dự án mã nguồn mở [pdoom-video](https://github.com/mexicat/pdoom-video) (giấy phép MIT). Đó là một music video cũng được vẽ hoàn toàn bằng code, với nguyên tắc "mỗi khung hình là một hàm của thời gian bài hát". Bài hát, lời và toàn bộ hình ảnh của "Không Có Phép Màu" là mới, không dùng lại nhạc hay hình của dự án đó.
 
-Mình làm bài này cùng Claude (một AI) trong một buổi, từ lời, giai điệu, phối khí đến video. Mã nguồn nằm trong [repo của website](https://github.com/datjbl932-web/buivandat/tree/main/music/khong-co-phep-mau), ai tò mò có thể xem và tự chạy lại.
+Mình làm bài này cùng Claude (một AI) trong một buổi, từ lời, giai điệu, phối khí, giọng hát đến video. Mã nguồn nằm trong [repo của website](https://github.com/datjbl932-web/buivandat/tree/main/music/khong-co-phep-mau), ai tò mò có thể xem và tự chạy lại.
+
+### Ghi nguồn & giấy phép
+
+- Giọng đọc gốc: mô hình Piper `vi-vivos-x-low`, huấn luyện trên bộ dữ liệu [VIVOS](https://ailab.hcmus.edu.vn/vivos/) của AILAB, ĐH Khoa học Tự nhiên TP.HCM, giấy phép [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.vi).
+- Vì phần giọng hát được tạo từ dữ liệu đó, **bài hát "Không Có Phép Màu" cũng được chia sẻ theo CC BY-NC-SA 4.0**. Bạn được nghe, chia sẻ và làm lại, miễn là ghi nguồn buivandat.com, không dùng cho mục đích thương mại và giữ cùng giấy phép.
+- Bộ phân tích giọng WORLD (giấy phép BSD), cách làm video lấy cảm hứng từ pdoom-video (MIT).
 
 ---
 
