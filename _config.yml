@@ -12,6 +12,8 @@ image: /assets/img/og-image.png
 author:
   name: Bùi Văn Đạt
   email: contact@buivandat.com
+  # Ảnh chân dung (không bắt buộc): đặt ảnh vào assets/img/ rồi bỏ dấu # ở dòng dưới
+  # photo: /assets/img/dat.jpg
 
 permalink: /blog/:title/
 markdown: kramdown

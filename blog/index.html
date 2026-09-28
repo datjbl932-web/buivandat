@@ -1,47 +1,50 @@
 ---
 layout: default
-title: Blog
-description: Tin tức MMO, phần mềm hữu ích và kinh nghiệm kiếm tiền online thực chiến – cập nhật bởi Đạt tại buivandat.com.
+title: Sổ tay MMO
+description: Tin tức MMO, phần mềm hữu ích và kinh nghiệm kiếm tiền online thực chiến – ghi chép bởi Đạt tại buivandat.com.
 scripts:
   - /assets/js/blog.js
 ---
 <section class="page-head">
-  <div class="hero__bg" aria-hidden="true"></div>
   <div class="container">
-    <p class="eyebrow">Blog</p>
-    <h1>Góc chia sẻ <span class="grad">MMO</span> của Đạt</h1>
-    <p class="lead">Tin tức, phần mềm và kinh nghiệm thực chiến – viết ngắn gọn, dễ hiểu, dễ áp dụng.</p>
+    <p class="label"><span class="label__dot"></span>Blog · {{ site.posts.size }} bài viết</p>
+    <h1 class="page-head__title">Sổ tay <em>MMO</em></h1>
+    <p class="page-head__lead">Tin tức, phần mềm và kinh nghiệm thực chiến. Viết ngắn gọn, nói thật, làm theo được.</p>
 
     <div class="blog-tools">
-      <label class="search">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <span class="sr-only">Tìm bài viết</span>
-        <input id="post-search" type="search" placeholder="Tìm bài viết…" autocomplete="off">
-      </label>
-      <div class="chips" role="group" aria-label="Lọc theo chuyên mục">
-        <button class="chip is-active" type="button" data-filter="all">Tất cả <span>{{ site.posts.size }}</span></button>
+      <div class="tabs" role="group" aria-label="Lọc theo chuyên mục">
+        <button class="tab is-active" type="button" data-filter="all">Tất cả<sup>{{ site.posts.size }}</sup></button>
         {%- for c in site.data.categories %}
         {%- assign n = site.posts | where: "category", c[0] | size %}
-        <button class="chip" type="button" data-filter="{{ c[0] }}">{{ c[1].name }} <span>{{ n }}</span></button>
+        <button class="tab" type="button" data-filter="{{ c[0] }}">{{ c[1].name }}<sup>{{ n }}</sup></button>
         {%- endfor %}
       </div>
+      <label class="search">
+        <span class="sr-only">Tìm bài viết</span>
+        <input id="post-search" type="search" placeholder="Tìm bài viết…" autocomplete="off">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </label>
     </div>
   </div>
 </section>
 
-<section class="section section--compact">
+<section class="section section--tight">
   <div class="container">
     {%- if site.posts.size > 0 %}
-    <div class="post-grid" id="post-grid">
-      {%- for p in site.posts %}
+    <div class="entries" id="post-grid">
+      {%- assign groups = site.posts | group_by_exp: "p", "p.date | date: '%m/%Y'" %}
+      {%- for g in groups %}
+      <h2 class="month" data-month>Tháng {{ g.name }}</h2>
+      {%- for p in g.items %}
       {% include post-card.html post=p %}
+      {%- endfor %}
       {%- endfor %}
     </div>
     {%- endif %}
     <div class="empty" id="post-empty"{% if site.posts.size > 0 %} hidden{% endif %}>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h13a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h8M8 13h5"/></svg>
+      <p class="empty__big">∅</p>
       <h3>Chưa có bài viết phù hợp</h3>
-      <p>Thử từ khoá khác hoặc chọn chuyên mục “Tất cả”.</p>
+      <p>Thử từ khoá khác hoặc chọn “Tất cả”.</p>
     </div>
   </div>
 </section>
