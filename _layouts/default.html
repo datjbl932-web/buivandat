@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  {% include head.html %}
+</head>
+<body>
+  {% include header.html %}
+  <main id="main">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+  {%- for s in page.scripts %}
+  <script src="{{ s }}" defer></script>
+  {%- endfor %}
+</body>
+</html>

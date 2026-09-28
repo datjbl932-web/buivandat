@@ -1,0 +1,45 @@
+(function () {
+  var grid = document.getElementById('post-grid');
+  if (!grid) return;
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.post-card'));
+  var chips = document.querySelectorAll('.chip');
+  var search = document.getElementById('post-search');
+  var empty = document.getElementById('post-empty');
+  var state = { cat: 'all', q: '' };
+
+  // Bỏ dấu tiếng Việt để tìm "kinh nghiem" vẫn ra "kinh nghiệm"
+  var normalize = function (s) {
+    return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd');
+  };
+  cards.forEach(function (c) { c._text = normalize(c.getAttribute('data-search') || ''); });
+
+  var apply = function () {
+    var q = normalize(state.q.trim());
+    var shown = 0;
+    cards.forEach(function (c) {
+      var ok = (state.cat === 'all' || c.getAttribute('data-cat') === state.cat) && (!q || c._text.indexOf(q) !== -1);
+      c.hidden = !ok;
+      if (ok) { shown++; c.classList.add('is-visible'); }
+    });
+    empty.hidden = shown > 0;
+    chips.forEach(function (ch) { ch.classList.toggle('is-active', ch.getAttribute('data-filter') === state.cat); });
+  };
+
+  var setCat = function (cat, push) {
+    state.cat = cat;
+    apply();
+    if (push) {
+      var url = cat === 'all' ? location.pathname : location.pathname + '?cat=' + cat;
+      history.replaceState(null, '', url);
+    }
+  };
+
+  chips.forEach(function (ch) {
+    ch.addEventListener('click', function () { setCat(ch.getAttribute('data-filter'), true); });
+  });
+  search.addEventListener('input', function () { state.q = search.value; apply(); });
+
+  var initial = new URLSearchParams(location.search).get('cat');
+  if (initial && document.querySelector('.chip[data-filter="' + initial + '"]')) setCat(initial, false);
+})();

@@ -1,0 +1,80 @@
+---
+layout: default
+---
+{%- assign cat = site.data.categories[page.category] -%}
+{%- assign share_url = page.url | absolute_url -%}
+<article class="article">
+  <header class="article__head">
+    <div class="article__bg" aria-hidden="true"></div>
+    <div class="container container--narrow">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Trang chủ</a><span>/</span><a href="/blog/">Blog</a>
+        {%- if cat %}<span>/</span><a href="/blog/?cat={{ page.category }}">{{ cat.name }}</a>{% endif %}
+      </nav>
+      {%- if cat %}<a class="cat cat--{{ cat.color }}" href="/blog/?cat={{ page.category }}">{{ cat.name }}</a>{% endif %}
+      <h1>{{ page.title }}</h1>
+      {%- if page.description %}<p class="article__lead">{{ page.description }}</p>{% endif %}
+      <div class="article__byline">
+        <img src="/assets/img/logo-mark.svg" alt="" width="40" height="40">
+        <div>
+          <strong>{{ page.author | default: site.author.name }}</strong>
+          <div class="meta">{% include post-meta.html post=page %}</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container container--narrow">
+    {%- if page.image %}
+    <img class="article__cover" src="{{ page.image }}" alt="{{ page.image_alt | default: page.title }}">
+    {%- endif %}
+
+    <div class="prose">
+      {{ content }}
+    </div>
+
+    <div class="share">
+      <span>Chia sẻ bài viết:</span>
+      <a class="share__btn" href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | url_encode }}" target="_blank" rel="noopener">Facebook</a>
+      <a class="share__btn" href="https://t.me/share/url?url={{ share_url | url_encode }}&amp;text={{ page.title | url_encode }}" target="_blank" rel="noopener">Telegram</a>
+      <button class="share__btn copy" type="button" data-copy="{{ share_url }}">Sao chép link</button>
+    </div>
+
+    <aside class="author-box">
+      <img src="/assets/img/logo-mark.svg" alt="" width="56" height="56">
+      <div>
+        <strong>Bùi Văn Đạt</strong>
+        <p>Người làm MMO lâu năm, chia sẻ tin tức, phần mềm và kinh nghiệm thực chiến tại buivandat.com. Có câu hỏi? Gửi mail cho mình tại <a href="mailto:{{ site.email }}">{{ site.email }}</a>.</p>
+      </div>
+    </aside>
+
+    {%- if page.previous or page.next %}
+    <nav class="pager" aria-label="Bài trước và bài sau">
+      {%- if page.previous %}
+      <a class="pager__item" href="{{ page.previous.url }}"><small>← Bài trước</small><span>{{ page.previous.title }}</span></a>
+      {%- else %}<span></span>{% endif %}
+      {%- if page.next %}
+      <a class="pager__item pager__item--next" href="{{ page.next.url }}"><small>Bài sau →</small><span>{{ page.next.title }}</span></a>
+      {%- endif %}
+    </nav>
+    {%- endif %}
+  </div>
+</article>
+
+{%- assign related = site.posts | where: "category", page.category | where_exp: "p", "p.url != page.url" -%}
+{%- if related.size == 0 -%}{%- assign related = site.posts | where_exp: "p", "p.url != page.url" -%}{%- endif -%}
+{%- if related.size > 0 %}
+<section class="section section--tint related">
+  <div class="container">
+    <div class="section__head section__head--row">
+      <h2>Bài viết liên quan</h2>
+      <a class="link" href="/blog/">Xem tất cả →</a>
+    </div>
+    <div class="post-grid">
+      {%- for p in related limit: 3 %}
+      {% include post-card.html post=p %}
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}

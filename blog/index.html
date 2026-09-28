@@ -1,0 +1,47 @@
+---
+layout: default
+title: Blog
+description: Tin tức MMO, phần mềm hữu ích và kinh nghiệm kiếm tiền online thực chiến – cập nhật bởi Đạt tại buivandat.com.
+scripts:
+  - /assets/js/blog.js
+---
+<section class="page-head">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="container">
+    <p class="eyebrow">Blog</p>
+    <h1>Góc chia sẻ <span class="grad">MMO</span> của Đạt</h1>
+    <p class="lead">Tin tức, phần mềm và kinh nghiệm thực chiến – viết ngắn gọn, dễ hiểu, dễ áp dụng.</p>
+
+    <div class="blog-tools">
+      <label class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <span class="sr-only">Tìm bài viết</span>
+        <input id="post-search" type="search" placeholder="Tìm bài viết…" autocomplete="off">
+      </label>
+      <div class="chips" role="group" aria-label="Lọc theo chuyên mục">
+        <button class="chip is-active" type="button" data-filter="all">Tất cả <span>{{ site.posts.size }}</span></button>
+        {%- for c in site.data.categories %}
+        {%- assign n = site.posts | where: "category", c[0] | size %}
+        <button class="chip" type="button" data-filter="{{ c[0] }}">{{ c[1].name }} <span>{{ n }}</span></button>
+        {%- endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--compact">
+  <div class="container">
+    {%- if site.posts.size > 0 %}
+    <div class="post-grid" id="post-grid">
+      {%- for p in site.posts %}
+      {% include post-card.html post=p %}
+      {%- endfor %}
+    </div>
+    {%- endif %}
+    <div class="empty" id="post-empty"{% if site.posts.size > 0 %} hidden{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h13a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h8M8 13h5"/></svg>
+      <h3>Chưa có bài viết phù hợp</h3>
+      <p>Thử từ khoá khác hoặc chọn chuyên mục “Tất cả”.</p>
+    </div>
+  </div>
+</section>
