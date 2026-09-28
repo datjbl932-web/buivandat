@@ -116,7 +116,7 @@ strong { color: var(--ink); }
 .entry__read span { display: inline-block; transition: transform .2s; }
 .entry:hover .entry__read span { transform: translateX(3px); color: var(--ink); }
 .entry--lead .entry__title { font-size: clamp(1.5rem, 2.6vw, 1.9rem); font-weight: 700; }
-.entry__img { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; margin-bottom: 18px; border-radius: var(--radius); }
+.entry__img { width: 100%; aspect-ratio: 12 / 5; object-fit: cover; margin-bottom: 18px; border-radius: var(--radius); }
 .month { font-size: .9rem; font-weight: 600; color: var(--ink); margin: 0; padding: 28px 0 10px; border-bottom: 1px solid var(--line); }
 .month[hidden] { display: none; }
 .entries .month:first-child { padding-top: 0; }
@@ -150,6 +150,9 @@ strong { color: var(--ink); }
 .tt-tag { font-size: .88rem; color: var(--muted); }
 .tt-name { font-weight: 600; color: var(--ink); }
 .stamp { display: inline-block; font-size: .78rem; font-weight: 500; color: var(--muted); background: var(--bg-alt); border: 1px solid var(--line); padding: 3px 10px; border-radius: 999px; }
+.stamp--live { color: #fff; background: var(--ink); border-color: var(--ink); }
+.stamp--live:hover { opacity: .85; }
+.tt-name a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .tools-more { margin: 24px 0 0; color: var(--muted); }
 
 /* ---------- Liên hệ ---------- */
