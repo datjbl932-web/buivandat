@@ -227,6 +227,10 @@ strong { color: var(--ink); }
 .prose ul, .prose ol { padding-left: 1.4em; }
 .prose li + li { margin-top: .4em; }
 .prose img { margin: 1.8em auto; border-radius: var(--radius); }
+.prose figure { width: min(1040px, calc(100vw - 32px)); margin: 2.2em 0 2.2em 50%; transform: translateX(-50%); }
+.prose figure a { display: block; }
+.prose figure img { margin: 0; width: 100%; border: 1px solid var(--line); border-radius: 10px; }
+.prose figcaption { margin-top: 10px; font-size: .9rem; line-height: 1.55; color: var(--muted); text-align: center; }
 .prose blockquote { margin: 1.8em 0; padding: 16px 20px; border-left: 3px solid var(--ink); background: var(--bg-alt); border-radius: 0 8px 8px 0; color: var(--ink); }
 .prose blockquote p { margin: 0; }
 .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; background: var(--bg-alt); padding: .12em .4em; border-radius: 4px; color: var(--ink); }

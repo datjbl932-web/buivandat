@@ -20,6 +20,11 @@ Termidat là phần mềm terminal chạy trên **Windows, macOS và Linux**, l�
 
 Bạn không cần cài thêm PuTTY hay WinSCP.
 
+<figure>
+  <a href="/assets/img/posts/termidat-ssh-sftp.jpg"><img src="/assets/img/posts/termidat-ssh-sftp.jpg" alt="Termidat đang kết nối SSH tới một VPS, chia 2 khung và mở bảng SFTP" loading="lazy"></a>
+  <figcaption>Một tab SSH chia 2 khung: bên trái gõ lệnh, bên phải theo dõi log. Bảng SFTP mở ngay bên cạnh. Ảnh chụp từ ứng dụng thật, kết nối tới server thử nghiệm.</figcaption>
+</figure>
+
 ## Tính năng chính
 
 ### Tab và chia khung
@@ -36,6 +41,11 @@ Bạn không cần cài thêm PuTTY hay WinSCP.
 - Đăng nhập bằng **mật khẩu**, **private key** (kể cả key có passphrase), **SSH agent** hoặc **Pageant** (PuTTY).
 - Mật khẩu được **mã hoá bằng kho khoá của hệ điều hành** (Windows DPAPI, macOS Keychain, libsecret trên Linux), không lưu dạng chữ thường.
 - **Kiểm tra vân tay khoá của server** và cảnh báo khi khoá thay đổi, giúp phát hiện tấn công giả mạo server (man-in-the-middle).
+
+<figure>
+  <a href="/assets/img/posts/termidat-quan-ly-ssh.jpg"><img src="/assets/img/posts/termidat-quan-ly-ssh.jpg" alt="Cửa sổ quản lý hồ sơ SSH của Termidat, các server được chia theo nhóm" loading="lazy"></a>
+  <figcaption>Hồ sơ SSH chia theo nhóm, bấm “Kết nối” là vào. Địa chỉ IP trong ảnh là dữ liệu mẫu.</figcaption>
+</figure>
 
 ### SFTP: tải file ngay cạnh terminal
 
@@ -57,6 +67,11 @@ Trong tab SSH, bấm `Ctrl+Shift+O` hoặc nút **SFTP** để mở bảng duy�
 ### Giao diện tuỳ chỉnh
 
 Có sẵn **6 theme**: Termidat Dark, Dracula, One Dark, Nord, Solarized Dark, GitHub Light. Bạn chỉnh được font, cỡ chữ, giãn dòng, kiểu con trỏ, số dòng lưu lại, tự sao chép khi bôi đen và hành vi chuột phải.
+
+<figure>
+  <a href="/assets/img/posts/termidat-cai-dat.jpg"><img src="/assets/img/posts/termidat-cai-dat.jpg" alt="Cửa sổ cài đặt của Termidat với theme Dracula" loading="lazy"></a>
+  <figcaption>Cửa sổ cài đặt: đổi theme là xem trước ngay, không cần khởi động lại.</figcaption>
+</figure>
 
 ## Người làm MMO dùng Termidat vào việc gì?
 
