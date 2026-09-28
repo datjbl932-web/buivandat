@@ -69,7 +69,7 @@
 
   // Contact form -> mailto
   var form = document.getElementById('contact-form');
-  form.addEventListener('submit', function (e) {
+  if (form) form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = form.elements.name;
     var message = form.elements.message;

@@ -1,0 +1,48 @@
+# Cấu hình website buivandat.com (Jekyll – GitHub Pages tự build)
+title: buivandat.com
+tagline: Tin tức, phần mềm & kinh nghiệm MMO
+description: buivandat.com – nơi Đạt chia sẻ tin tức, phần mềm và kinh nghiệm kiếm tiền online (MMO) thực chiến, minh bạch, dễ áp dụng.
+url: https://buivandat.com
+baseurl: ""
+lang: vi_VN
+timezone: Asia/Ho_Chi_Minh
+email: contact@buivandat.com
+logo: /assets/img/icon-512.png
+image: /assets/img/og-image.png
+author:
+  name: Bùi Văn Đạt
+  email: contact@buivandat.com
+
+permalink: /blog/:title/
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
+  transliterated_header_ids: true
+  syntax_highlighter_opts:
+    disable: true
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+feed:
+  path: feed.xml
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      author: Bùi Văn Đạt
+
+exclude:
+  - README.md
+  - CNAME
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+twitter:
+  card: summary_large_image

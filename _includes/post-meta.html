@@ -1,0 +1,5 @@
+{%- assign words = include.post.content | strip_html | number_of_words -%}
+{%- assign minutes = words | divided_by: 250 | plus: 1 -%}
+<time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: "%d/%m/%Y" }}</time>
+<span aria-hidden="true">·</span>
+<span>{{ minutes }} phút đọc</span>

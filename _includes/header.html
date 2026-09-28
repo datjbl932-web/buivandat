@@ -1,0 +1,21 @@
+<a class="skip" href="#main">Bỏ qua tới nội dung</a>
+<header class="nav" id="top">
+  <div class="container nav__inner">
+    <a class="brand" href="/" aria-label="buivandat.com – Trang chủ">
+      <img src="/assets/img/logo-mark.svg" alt="" width="36" height="36">
+      <span>buivandat<em>.com</em></span>
+    </a>
+    <button class="nav__toggle" aria-label="Mở menu" aria-expanded="false" aria-controls="menu">
+      <span></span><span></span><span></span>
+    </button>
+    {%- assign in_blog = false -%}
+    {%- if page.layout == 'post' or page.url contains '/blog/' -%}{%- assign in_blog = true -%}{%- endif -%}
+    <nav class="nav__menu" id="menu" aria-label="Menu chính">
+      <a href="/#gioi-thieu">Giới thiệu</a>
+      <a href="/blog/"{% if in_blog %} aria-current="page"{% endif %}>Blog</a>
+      <a href="/#phan-mem">Phần mềm</a>
+      <a href="/#nguyen-tac">Nguyên tắc</a>
+      <a class="btn btn--sm" href="/#lien-he">Liên hệ</a>
+    </nav>
+  </div>
+</header>
