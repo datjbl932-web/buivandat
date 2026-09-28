@@ -8,3 +8,6 @@ phan-mem:
 kinh-nghiem:
   name: Kinh nghiệm
   desc: Quy trình, case study, bài học xương máu
+am-nhac:
+  name: Âm nhạc
+  desc: Nhạc và video làm bằng code

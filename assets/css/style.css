@@ -229,7 +229,11 @@ strong { color: var(--ink); }
 .prose li + li { margin-top: .4em; }
 .prose img { margin: 1.8em auto; border-radius: var(--radius); }
 .prose figure { width: min(1040px, calc(100vw - 32px)); margin: 2.2em 0 2.2em 50%; transform: translateX(-50%); }
-.prose figure a { display: block; }
+.prose figure > a { display: block; }
+.prose figure video { display: block; width: 100%; height: auto; border-radius: 10px; background: #000; }
+.lyrics p { white-space: pre-line; }
+.lyrics p + p { margin-top: 1.1em; }
+.lyrics { padding: 4px 0 4px 20px; border-left: 3px solid var(--line); }
 .prose figure img { margin: 0; width: 100%; border: 1px solid var(--line); border-radius: 10px; }
 .prose figcaption { margin-top: 10px; font-size: .9rem; line-height: 1.55; color: var(--muted); text-align: center; }
 .prose blockquote { margin: 1.8em 0; padding: 16px 20px; border-left: 3px solid var(--ink); background: var(--bg-alt); border-radius: 0 8px 8px 0; color: var(--ink); }

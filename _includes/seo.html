@@ -81,6 +81,13 @@
 <meta property="article:section" content="{{ cat.name }}">
 {%- endif %}
 {%- endif %}
+{%- if page.video %}
+<meta property="og:video" content="{{ page.video.url | absolute_url }}">
+<meta property="og:video:secure_url" content="{{ page.video.url | absolute_url }}">
+<meta property="og:video:type" content="video/mp4">
+<meta property="og:video:width" content="1920">
+<meta property="og:video:height" content="1080">
+{%- endif %}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ og_title | escape }}">
 <meta name="twitter:description" content="{{ seo_desc | escape }}">
@@ -135,6 +142,19 @@
       "publisher": { "@id": "{{ site.url }}/#site-org" },
       "isPartOf": { "@id": "{{ site.url }}/#website" }
     },
+    {%- if page.video %}
+    {
+      "@type": "VideoObject",
+      "name": {{ page.video.name | default: page.title | jsonify }},
+      "description": {{ seo_desc | jsonify }},
+      "thumbnailUrl": "{{ page.video.thumbnail | absolute_url }}",
+      "contentUrl": "{{ page.video.url | absolute_url }}",
+      "uploadDate": "{{ page.date | date_to_xmlschema }}",
+      "duration": "{{ page.video.duration }}",
+      "inLanguage": "vi-VN",
+      "author": { "@id": "{{ site.url }}/#dat" }
+    },
+    {%- endif %}
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
