@@ -1,0 +1,13 @@
+services:
+  datcrawl:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_PATH: /app/data/datcrawl.db
+      PROXIES_FILE: /app/proxies.txt
+    ports:
+      - "127.0.0.1:8080:8080"   # chỉ mở trong máy; đặt Caddy/Nginx phía trước để có HTTPS
+    volumes:
+      - ./data:/app/data
+      - ./proxies.txt:/app/proxies.txt:ro

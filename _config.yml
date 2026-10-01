@@ -49,6 +49,7 @@ exclude:
   - CNAME
   - scripts
   - music
+  - crawler
   - package.json
   - package-lock.json
   - node_modules

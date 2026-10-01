@@ -1,0 +1,4 @@
+# Mỗi dòng một proxy. Proxy dân cư (residential) ít bị Amazon chặn hơn proxy datacenter rất nhiều.
+# http://username:password@gate.nha-cung-cap.com:7777
+# 123.45.67.89:8080
+# 123.45.67.89:8080:username:password

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DatCrawl – Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top__in">
+      <a class="brand" href="./"><span class="mark">D</span> DatCrawl</a>
+      <nav id="tabs" hidden>
+        <button data-tab="overview" class="on">Tổng quan</button>
+        <button data-tab="playground">Thử nghiệm</button>
+        <button data-tab="jobs">Job hàng loạt</button>
+        <button data-tab="docs">Tài liệu API</button>
+        <button data-tab="admin" id="tab-admin" hidden>Quản trị</button>
+        <button id="logout" class="ghost">Đăng xuất</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- đăng nhập -->
+    <section id="login" class="card narrow">
+      <h1>Đăng nhập</h1>
+      <p class="muted">Nhập API token (bắt đầu bằng <code>dc_</code>). Quản trị viên có thể nhập thêm ADMIN_TOKEN để quản lý token và proxy.</p>
+      <form id="login-form">
+        <label>API token<input name="token" autocomplete="off" placeholder="dc_..."></label>
+        <label>ADMIN_TOKEN (không bắt buộc)<input name="admin" type="password" autocomplete="off"></label>
+        <button class="btn" type="submit">Vào dashboard</button>
+        <p class="err" id="login-err" hidden></p>
+      </form>
+    </section>
+
+    <!-- tổng quan -->
+    <section data-panel="overview" hidden>
+      <h1>Tổng quan</h1>
+      <div class="stats" id="stats"></div>
+      <h2>30 ngày gần nhất</h2>
+      <div class="chart" id="chart"></div>
+      <table class="tbl" id="usage"><thead><tr><th>Ngày</th><th>Thành công</th><th>Thất bại</th><th>Từ cache</th><th>Dữ liệu</th></tr></thead><tbody></tbody></table>
+    </section>
+
+    <!-- thử nghiệm -->
+    <section data-panel="playground" hidden>
+      <h1>Thử nghiệm</h1>
+      <form id="play" class="card">
+        <label>URL cần crawl<input name="url" required placeholder="https://www.amazon.com/dp/B0BKW3LB2B"></label>
+        <div class="row">
+          <label>Scraper<select name="scraper" id="scraper-select"><option value="">(không – trả HTML)</option><option value="auto" selected>auto – tự nhận diện</option></select></label>
+          <label>Cache<select name="cache"><option value="true">Dùng cache</option><option value="false">Bỏ qua cache</option></select></label>
+          <label>JavaScript<select name="javascript"><option value="false">Không</option><option value="true">Có (cần ENABLE_JS)</option></select></label>
+        </div>
+        <button class="btn" type="submit">Crawl</button>
+      </form>
+      <div id="play-meta" class="meta"></div>
+      <pre id="play-out" class="out" hidden></pre>
+    </section>
+
+    <!-- job hàng loạt -->
+    <section data-panel="jobs" hidden>
+      <h1>Job hàng loạt</h1>
+      <form id="job-form" class="card">
+        <label>Danh sách URL (mỗi dòng một URL, tối đa 10.000)<textarea name="urls" rows="6" placeholder="https://www.amazon.com/dp/...&#10;https://www.amazon.com/s?k=..."></textarea></label>
+        <div class="row">
+          <label>Scraper<select name="scraper" id="job-scraper"><option value="auto">auto – tự nhận diện</option><option value="">(không – lưu HTML)</option></select></label>
+          <label>Webhook (không bắt buộc)<input name="callback_url" placeholder="https://may-chu-cua-ban/webhook"></label>
+        </div>
+        <button class="btn" type="submit">Tạo job</button>
+        <p class="err" id="job-err" hidden></p>
+      </form>
+      <table class="tbl" id="jobs-tbl"><thead><tr><th>Job</th><th>Tạo lúc</th><th>Scraper</th><th>Tiến độ</th><th>Trạng thái</th><th></th></tr></thead><tbody></tbody></table>
+    </section>
+
+    <!-- tài liệu -->
+    <section data-panel="docs" hidden>
+      <h1>Tài liệu API</h1>
+      <p>Gọi giống <strong>Crawlbase Crawling API</strong>: chỉ cần đổi địa chỉ máy chủ. Thêm <code>scraper=</code> để nhận JSON đã phân tích.</p>
+      <h2>Crawl một URL</h2>
+      <pre class="out" id="doc-curl"></pre>
+      <table class="tbl"><thead><tr><th>Tham số</th><th>Ý nghĩa</th></tr></thead><tbody>
+        <tr><td><code>token</code></td><td>API token (hoặc header <code>Authorization: Bearer …</code>)</td></tr>
+        <tr><td><code>url</code></td><td>URL cần crawl (nhớ mã hoá URL)</td></tr>
+        <tr><td><code>scraper</code></td><td><span id="doc-scrapers"></span></td></tr>
+        <tr><td><code>format</code></td><td><code>html</code> (mặc định khi không có scraper) hoặc <code>json</code></td></tr>
+        <tr><td><code>cache</code></td><td><code>false</code> để luôn tải mới</td></tr>
+        <tr><td><code>retries</code></td><td>Số lần thử lại khi bị chặn (0–8)</td></tr>
+        <tr><td><code>javascript</code></td><td><code>true</code> để mở bằng trình duyệt thật (máy chủ cần bật ENABLE_JS)</td></tr>
+      </tbody></table>
+      <h2>Kết quả</h2>
+      <p><code>pc_status</code>: 200 thành công · 400 URL/scraper sai · 401 token sai · 429 vượt giới hạn · 520 tải thất bại hoặc bị chặn ở mọi lần thử · 525 phân tích thất bại. <code>original_status</code> là mã HTTP của trang gốc.</p>
+      <h2>Python</h2>
+      <pre class="out" id="doc-py"></pre>
+      <h2>Node.js</h2>
+      <pre class="out" id="doc-node"></pre>
+      <h2>Job hàng loạt + webhook</h2>
+      <pre class="out" id="doc-job"></pre>
+      <p>Webhook nhận <code>POST</code> JSON cho từng URL, kèm header <code>X-DatCrawl-Signature: sha256=&lt;HMAC-SHA256(body, webhook_secret)&gt;</code>. Webhook secret xem ở mục Tổng quan.</p>
+    </section>
+
+    <!-- quản trị -->
+    <section data-panel="admin" hidden>
+      <h1>Quản trị</h1>
+      <form id="tok-form" class="card row">
+        <label>Tên khách / mục đích<input name="name" required></label>
+        <label>Giới hạn / phút<input name="rate_limit" type="number" min="1" placeholder="mặc định"></label>
+        <label>Hạn mức / tháng<input name="monthly_quota" type="number" min="1" placeholder="không giới hạn"></label>
+        <button class="btn" type="submit">Tạo token</button>
+      </form>
+      <p class="ok" id="tok-new" hidden></p>
+      <table class="tbl" id="tok-tbl"><thead><tr><th>#</th><th>Tên</th><th>Token</th><th>Giới hạn/phút</th><th>Hạn mức/tháng</th><th>Thành công</th><th>Thất bại</th><th></th></tr></thead><tbody></tbody></table>
+      <h2>Sức khoẻ proxy</h2>
+      <table class="tbl" id="px-tbl"><thead><tr><th>Proxy</th><th>Điểm</th><th>OK</th><th>Lỗi</th><th>Bị chặn</th><th>Đang chạy</th><th>Đang nghỉ</th></tr></thead><tbody></tbody></table>
+    </section>
+  </main>
+
+  <div id="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
